@@ -476,7 +476,7 @@ class Line(SeriesCommon):
             {self._chart.id}.legend._lines = {self._chart.id}.legend._lines.filter((item) => item != {self.id}legendItem)
 
             if ({self.id}legendItem) {{
-                {self._chart.id}.legend.div.removeChild({self.id}legendItem.row)
+                {self.id}legendItem.row.remove();
             }}
 
             {self._chart.id}.chart.removeSeries({self.id}.series)
@@ -508,6 +508,7 @@ class Histogram(SeriesCommon):
     def delete(self):
         """
         Irreversibly deletes the histogram.
+        {self._chart.id}.legend.div.removeChild({self.id}legendItem.row)
         """
         self.run_script(f'''
             {self.id}legendItem = {self._chart.id}.legend._lines.find((line) => line.series == {self.id}.series)
@@ -755,6 +756,11 @@ class AbstractChart(Candlestick, Pane):
             to: {pd.to_datetime(end_time).timestamp()}
         }})
         ''')
+    
+    def get_visible_range(self):
+        return self.run_script_and_get(f'''
+        {self.id}.chart.timeScale().getVisibleRange()
+        ''')
 
     def resize(self, width: Optional[float] = None, height: Optional[float] = None):
         """
@@ -958,4 +964,5 @@ class AbstractChart(Candlestick, Pane):
             sync = self.id
         args = locals()
         del args['self']
+        print(args)
         return self.win.create_subchart(*args.values())
