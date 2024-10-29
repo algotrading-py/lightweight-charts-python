@@ -12,6 +12,7 @@ class Pane:
         from lightweight_charts import Window
         self.win: Window = window
         self.run_script = window.run_script
+        self.run_script_and_get = window.run_script_and_get
         self.bulk_run = window.bulk_run
         if hasattr(self, 'id'):
             return
