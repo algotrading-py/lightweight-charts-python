@@ -277,4 +277,5 @@ class VerticalSpan(Pane):
         """
         Irreversibly deletes the vertical span.
         """
+        print("delete")
         self.run_script(f'{self._chart.id}.chart.removeSeries({self.id})')
